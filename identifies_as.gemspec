@@ -4,9 +4,9 @@ Gem::Specification.new do |spec|
 
   spec.name                      =  'identifies_as'
   spec.rubyforge_project         =  'identifies_as'
-  spec.version                   =  '1.0.1'
+  spec.version                   =  '1.0.2'
 
-  spec.summary                   =  "Permits objects to identify as if they are other types of objects. Effects :is_a? and :===."
+  spec.summary                   =  "Identities are interfaces. Sometimes it makes more sense to test an identity than a method- but then you don't want to limit flexibility. So why not let objects that claim to implement your interface identify as your object? IdentifiesAs permits objects to identify as if they are other types of objects."
   spec.description               =  "Provides IdentifiesAs, which offers :identifies_as!, :identifies_as?, :no_longer_identifies_as! and :identities, and overrides :is_a? and :===."
 
   spec.authors                   =  [ 'Asher' ]
