@@ -162,6 +162,9 @@ module ::IdentifiesAs
   #  identifies_as!  #
   ####################
   
+  # Cause receiver to identify as specified objects.
+  # @param [Array<Object>] objects Other objects self should identify as.
+  # @return [Object] Self.
   def identifies_as!( *objects )
 
     return ::IdentifiesAs.object_identifies_as!( self, *objects )
@@ -172,6 +175,9 @@ module ::IdentifiesAs
   #  instances_identify_as!  #
   ############################
   
+  # Cause instances of receiver to identify as specified objects.
+  # @param [Array<Object>] objects Other objects self should identify as.
+  # @return [Object] Self.
   def instances_identify_as!( *objects )
     
     return ::IdentifiesAs.object_instances_identify_as!( self, *objects )
@@ -182,9 +188,12 @@ module ::IdentifiesAs
   #  identifies_as?  #
   ####################
   
-  def identifies_as?( *objects )
+  # Query whether receiver identifies as specified object.
+  # @param [Object] object Object against which identity is being tested.
+  # @return [true,false] Whether receiver identifies as object.
+  def identifies_as?( object )
     
-    return ::IdentifiesAs.object_identifies_as?( self, *objects )    
+    return ::IdentifiesAs.object_identifies_as?( self, object )    
     
   end
 
@@ -192,9 +201,12 @@ module ::IdentifiesAs
   #  instances_identify_as?  #
   ############################
   
-  def instances_identify_as?( *objects )
+  # Query whether instances of receiver identify as specified object.
+  # @param [Object] object Object against which identity is being tested.
+  # @return [true,false] Whether instances of receiver identify as object.
+  def instances_identify_as?( object )
     
-    return ::IdentifiesAs.object_instances_identify_as?( self, *objects )    
+    return ::IdentifiesAs.object_instances_identify_as?( self, object )    
     
   end
 
@@ -202,6 +214,8 @@ module ::IdentifiesAs
   #  identities  #
   ################
   
+  # Identities that receiver identifies as, beyond those which it actually is.
+  # @return [Array<Object>] Identities receiver identifies as.
   def identities
     
     return ::IdentifiesAs.object_identities( self )    
@@ -212,6 +226,8 @@ module ::IdentifiesAs
   #  instance_identities  #
   #########################
   
+  # Identities that instances of receiver identify as, beyond those which it actually is.
+  # @return [Array<Object>] Identities instances of receiver identifies as.
   def instance_identities
     
     return ::IdentifiesAs.object_instance_identities( self )    
@@ -222,6 +238,9 @@ module ::IdentifiesAs
   #  no_longer_identifies_as!  #
   ##############################
   
+  # Cause receiver to no longer identify as specified objects.
+  # @param [Array<Object>] objects Other objects receiver should no longer identify as.
+  # @return [Object] Self.
   def no_longer_identifies_as!( *objects )
     
     return ::IdentifiesAs.object_no_longer_identifies_as!( self, *objects )    
@@ -232,6 +251,9 @@ module ::IdentifiesAs
   #  instances_no_longer_identify_as!  #
   ######################################
   
+  # Cause instances of receiver to no longer identify as specified objects.
+  # @param [Array<Object>] objects Other objects instance of receiver should no longer identify as.
+  # @return [Object] Self.
   def no_longer_identifies_as!( *objects )
     
     return ::IdentifiesAs.object_instances_no_longer_identify_as!( self, *objects )    
@@ -242,6 +264,9 @@ module ::IdentifiesAs
   #  actually_is_a?  #
   ####################
   
+  # Alias to the original :is_a? method without IdentifyAs functionality.
+  # @param [Object] objects Other object to test identity against.
+  # @return [true,false] Whether receiver is actually instance of specified object.
   alias_method :actually_is_a?, :is_a?
 
   ###########
