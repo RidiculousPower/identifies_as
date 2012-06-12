@@ -2,13 +2,13 @@
 
 http://rubygems.org/gems/identifies_as
 
-# Description #
-
-Provides IdentifiesAs, which offers :identifies_as!, :identifies_as?, :no_longer_identifies_as! and :identities, and overrides :is_a? and :===.
-
 # Summary #
 
 Permits objects to identify as if they are other types of objects. Effects :is_a? and :===.
+
+# Description #
+
+Provides IdentifiesAs, which offers :identifies_as!, :instances_identify_as!, :identifies_as?, :instances_identify_as?, :no_longer_identifies_as!, :instances_no_longer_identify_as, :identities, :instance_identities, and overrides :is_a? and :===.
 
 # Install #
 
