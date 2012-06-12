@@ -4,7 +4,11 @@ http://rubygems.org/gems/identifies_as
 
 # Summary #
 
-Permits objects to identify as if they are other types of objects. Effects :is_a? and :===.
+Identities are interfaces. Sometimes it makes more sense to test an identity than a method- but then you don't want to limit flexibility.
+
+So why not let objects that claim to implement your interface identify as your object?
+
+IdentifiesAs permits objects to identify as if they are other types of objects.
 
 # Description #
 
