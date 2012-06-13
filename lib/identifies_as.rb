@@ -24,3 +24,7 @@ require_relative( basepath + '.rb' )
 class ::Object
   include ::IdentifiesAs
 end
+
+class ::Module
+  include ::IdentifiesAs::ClassInstance
+end
