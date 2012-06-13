@@ -2,3 +2,8 @@
 == 6/12/2012
 
 Initial release.
+
+== 6/13/2012
+
+Renamed :no_longer_identifying_as! and :instances_no_longer_identify_as! to :stop_identifying_as! and :stop_instances_identifying_as!
+Added support for subclassing and module inclusion.

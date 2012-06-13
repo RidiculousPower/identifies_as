@@ -15,7 +15,7 @@ module ::IdentifiesAs
   def self.object_identifies_as!( object, *objects )
 
     object_id = object.__id__
-
+          
     unless identifies_as_hash = @identities[ object_id ]
       identifies_as_hash = { }
       @identities[ object_id ] = identifies_as_hash
@@ -53,11 +53,28 @@ module ::IdentifiesAs
   ################################
 
   def self.object_identifies_as?( object, other_object_type )
-    
+
     object_identifies = false
     
-    if identifies_as_hash = @identities[ object.__id__ ]
-      object_identifies = identifies_as_hash.has_key?( other_object_type )
+    object_ancestor_chain = nil
+  
+    if object.actually_is_a?( ::Module )
+      object_ancestor_chain = object.ancestors.dup
+    else
+      object_ancestor_chain = [ object ]
+      if object.actually_is_a?( ::Symbol ) or object.actually_is_a?( ::Fixnum )
+        object_ancestor_chain.concat( object.class.ancestors )
+      else
+        object_ancestor_chain.concat( class << object ; ancestors ; end )
+      end
+    end
+
+    object_ancestor_chain.each do |this_ancestor|
+  
+      if identifies_as_hash = @identities[ this_ancestor.__id__ ]
+        break if object_identifies = identifies_as_hash.has_key?( other_object_type )
+      end
+  
     end
 
     unless object_identifies
@@ -73,11 +90,13 @@ module ::IdentifiesAs
   ########################################
 
   def self.object_instances_identify_as?( object_class, other_object_type )
-    
-    object_identifies = false
 
-    if identifies_as_hash = @instance_identities[ object_class ]
-      object_identifies = identifies_as_hash.has_key?( other_object_type )
+    object_identifies = false
+    
+    object_class.ancestors.each do |this_ancestor|
+      if identifies_as_hash = @instance_identities[ this_ancestor ]
+        object_identifies = identifies_as_hash.has_key?( other_object_type )
+      end
     end
     
     return object_identifies
@@ -124,16 +143,15 @@ module ::IdentifiesAs
     
   end
 
-  ##########################################
-  #  self.object_no_longer_identifies_as!  #
-  ##########################################
+  ######################################
+  #  self.object_stop_identifying_as!  #
+  ######################################
   
-  def self.object_no_longer_identifies_as!( object, *objects )
+  def self.object_stop_identifying_as!( object, *objects )
 
-    if identifies_as_hash = @identities[ object ]
-      object_identifies = identifies_as_hash.has_key?( object )
+    if identifies_as_hash = @identities[ object.__id__ ]
       objects.each do |this_object|
-        object_identifies.delete( this_object.__id__ )
+        identifies_as_hash.delete( this_object )
       end
     end
     
@@ -142,10 +160,10 @@ module ::IdentifiesAs
   end
 
   ##################################################
-  #  self.object_instances_no_longer_identify_as!  #
+  #  self.object_stop_instances_identifying_as!  #
   ##################################################
   
-  def self.object_instances_no_longer_identify_as!( object_class, *objects )
+  def self.object_stop_instances_identifying_as!( object_class, *objects )
 
     if identifies_as_hash = @instance_identities[ object_class ]
       object_identifies = identifies_as_hash.has_key?( object_class )
@@ -235,39 +253,30 @@ module ::IdentifiesAs
   end
 
   ##############################
-  #  no_longer_identifies_as!  #
+  #  stop_identifying_as!  #
   ##############################
   
   # Cause receiver to no longer identify as specified objects.
   # @param [Array<Object>] objects Other objects receiver should no longer identify as.
   # @return [Object] Self.
-  def no_longer_identifies_as!( *objects )
+  def stop_identifying_as!( *objects )
     
-    return ::IdentifiesAs.object_no_longer_identifies_as!( self, *objects )    
+    return ::IdentifiesAs.object_stop_identifying_as!( self, *objects )    
     
   end
 
-  ######################################
-  #  instances_no_longer_identify_as!  #
-  ######################################
+  ####################################
+  #  stop_instances_identifying_as!  #
+  ####################################
   
   # Cause instances of receiver to no longer identify as specified objects.
   # @param [Array<Object>] objects Other objects instance of receiver should no longer identify as.
   # @return [Object] Self.
-  def no_longer_identifies_as!( *objects )
+  def stop_instances_identifying_as!( *objects )
     
-    return ::IdentifiesAs.object_instances_no_longer_identify_as!( self, *objects )    
+    return ::IdentifiesAs.object_stop_instances_identifying_as!( self, *objects )    
     
   end
-
-  ####################
-  #  actually_is_a?  #
-  ####################
-  
-  # Alias to the original :is_a? method without IdentifyAs functionality.
-  # @param [Object] objects Other object to test identity against.
-  # @return [true,false] Whether receiver is actually instance of specified object.
-  alias_method :actually_is_a?, :is_a?
 
   ###########
   #  is_a?  #
