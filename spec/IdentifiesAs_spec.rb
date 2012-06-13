@@ -31,7 +31,7 @@ describe ::IdentifiesAs do
     instance.identities.should == [ ]    
     instance.is_a?( Array ).should == false
     ( Array === instance ).should == false
-    
+        
   end
 
   ####################################
@@ -60,7 +60,32 @@ describe ::IdentifiesAs do
     class AlsoNotAnArray < NotAnArray
     end
     
+    module Unrelated
+    end
+    
     NotAnArray.is_a?( SomeOtherClass ).should == true
+    ( NotAnArray < Array ).should == true
+    ( NotAnArray > Array ).should == false
+    ( NotAnArray <= Array ).should == true
+    ( NotAnArray >= Array ).should == false
+
+    ( NotAnArray <=> Array ).should == -1
+    ( Array <=> NotAnArray ).should == 1
+    ( NotAnArray <=> NotAnArray ).should == 0
+    ( NotAnArray <=> Unrelated ).should == nil
+
+    AlsoNotAnArray.is_a?( SomeOtherClass ).should == true
+    ( AlsoNotAnArray < Array ).should == true
+    ( AlsoNotAnArray > Array ).should == false
+    ( AlsoNotAnArray <= Array ).should == true
+    ( AlsoNotAnArray >= Array ).should == false
+
+    ( AlsoNotAnArray <=> NotAnArray ).should == -1
+    ( NotAnArray <=> AlsoNotAnArray ).should == 1
+    ( AlsoNotAnArray <=> Array ).should == -1
+    ( Array <=> AlsoNotAnArray ).should == 1
+    ( AlsoNotAnArray <=> AlsoNotAnArray ).should == 0
+    ( AlsoNotAnArray <=> Unrelated ).should == nil
     
     instance = NotAnArray.new
     instance.identifies_as?( Array ).should == true
