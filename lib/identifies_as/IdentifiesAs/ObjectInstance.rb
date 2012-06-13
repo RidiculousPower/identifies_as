@@ -50,7 +50,7 @@ module ::IdentifiesAs::ObjectInstance
   # @return [Object] Self.
   def stop_identifying_as!( *objects )
     
-    return ::IdentifiesAs.object_stop_identifying_as!( self, *objects )    
+    return ::IdentifiesAs.stop_object_identifying_as!( self, *objects )    
     
   end
 

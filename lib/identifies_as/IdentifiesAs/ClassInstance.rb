@@ -49,7 +49,7 @@ module ::IdentifiesAs::ClassInstance
   # @return [Object] Self.
   def stop_instances_identifying_as!( *objects )
     
-    return ::IdentifiesAs.object_stop_instances_identifying_as!( self, *objects )    
+    return ::IdentifiesAs.stop_object_instances_identifying_as!( self, *objects )    
     
   end
   

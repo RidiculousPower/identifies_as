@@ -8,3 +8,4 @@ Initial release.
 Renamed :no_longer_identifying_as! and :instances_no_longer_identify_as! to :stop_identifying_as! and :stop_instances_identifying_as!
 Added support for subclassing and module inclusion.
 Added Module-level support for :<, :>, :<=, :>=, :<==>.
+Updates for support to stop identification when an ancestor identifies (either actually or by way of IdentifiesAs).

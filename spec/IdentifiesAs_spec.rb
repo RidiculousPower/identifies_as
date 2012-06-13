@@ -87,15 +87,15 @@ describe ::IdentifiesAs do
     ( AlsoNotAnArray <=> AlsoNotAnArray ).should == 0
     ( AlsoNotAnArray <=> Unrelated ).should == nil
     
-    instance = NotAnArray.new
-    instance.identifies_as?( Array ).should == true
-    instance.is_a?( Array ).should == true
-    ( Array === instance ).should == true
+    not_an_array_instance = NotAnArray.new
+    not_an_array_instance.identifies_as?( Array ).should == true
+    not_an_array_instance.is_a?( Array ).should == true
+    ( Array === not_an_array_instance ).should == true
 
-    instance = AlsoNotAnArray.new
-    instance.identifies_as?( Array ).should == true
-    instance.is_a?( Array ).should == true
-    ( Array === instance ).should == true
+    also_not_an_array_instance = AlsoNotAnArray.new
+    also_not_an_array_instance.identifies_as?( Array ).should == true
+    also_not_an_array_instance.is_a?( Array ).should == true
+    ( Array === also_not_an_array_instance ).should == true
 
     module IncludersActLikeArray
       include IdentifiesAs
@@ -106,6 +106,12 @@ describe ::IdentifiesAs do
       include IncludersActLikeArray
     end
 
+    another_non_array_instance = AnotherNonArray.new
+    another_non_array_instance.identifies_as?( Array ).should == true
+    another_non_array_instance.is_a?( Array ).should == true
+    ( Array === another_non_array_instance ).should == true
+    
+
     module IncludersAlsoActLikeArray
       include IncludersActLikeArray
     end
@@ -114,10 +120,20 @@ describe ::IdentifiesAs do
       include IncludersAlsoActLikeArray
     end
     
-    instance = AnotherNonArray.new
-    instance.identifies_as?( Array ).should == true
-    instance.is_a?( Array ).should == true
-    ( Array === instance ).should == true
+    and_another_non_array_instance = AndAnotherNonArray.new
+    and_another_non_array_instance.identifies_as?( Array ).should == true
+    and_another_non_array_instance.is_a?( Array ).should == true
+    ( Array === and_another_non_array_instance ).should == true
+    
+    AndAnotherNonArray.stop_instances_identifying_as!( Array )
+    and_another_non_array_instance.identifies_as?( Array ).should == false
+    and_another_non_array_instance.is_a?( Array ).should == false
+    ( Array === and_another_non_array_instance ).should == false
+
+    AnotherNonArray.stop_instances_identifying_as!( Array )
+    another_non_array_instance.identifies_as?( Array ).should == false
+    another_non_array_instance.is_a?( Array ).should == false
+    ( Array === another_non_array_instance ).should == false
     
   end
   

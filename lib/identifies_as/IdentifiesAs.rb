@@ -9,6 +9,9 @@ module ::IdentifiesAs
   @identities = { }
   @instance_identities = { }
   
+  @do_not_identify_as = { }
+  @instances_do_not_identify_as = { }
+  
   ################################
   #  self.object_identifies_as!  #
   ################################
@@ -24,6 +27,12 @@ module ::IdentifiesAs
     
     objects.each do |this_object|
       identifies_as_hash[ this_object ] = true
+    end
+    
+    if do_not_identify_as_hash = @do_not_identify_as[ object_id ]
+      objects.each do |this_object|
+        do_not_identify_as_hash.delete( this_object )
+      end
     end
     
     return identifies_as_hash
@@ -45,6 +54,12 @@ module ::IdentifiesAs
       identifies_as_hash[ this_object ] = true
     end
     
+    if do_not_identify_as_hash = @instances_do_not_identify_as[ object_class ]
+      objects.each do |this_object|
+        do_not_identify_as_hash.delete( object_class )
+      end
+    end
+    
     return identifies_as_hash
     
   end
@@ -57,8 +72,13 @@ module ::IdentifiesAs
 
     object_identifies = object_instance_identifies_as?( object, other_object_type )
 
-    unless object_identifies
+    # If we got nil that means we were told to stop looking.
+    unless object_identifies or object_identifies.nil?
       object_identifies = object_instances_identify_as?( object.class, other_object_type )
+    end
+    
+    if object_identifies.nil?
+      object_identifies = false
     end
     
     return object_identifies
@@ -87,8 +107,14 @@ module ::IdentifiesAs
     end
 
     object_ancestor_chain.each do |this_ancestor|
-  
-      if identifies_as_hash = @identities[ this_ancestor.__id__ ]
+
+      this_ancestor_id = this_ancestor.__id__
+
+      if do_not_identify_as_hash = @do_not_identify_as[ this_ancestor_id ] and
+         do_not_identify_as_hash.has_key?( other_object_type )
+        object_identifies = nil
+        break
+      elsif identifies_as_hash = @identities[ this_ancestor_id ]
         break if object_identifies = identifies_as_hash.has_key?( other_object_type )
       end
   
@@ -105,11 +131,15 @@ module ::IdentifiesAs
   def self.object_instances_identify_as?( object_class, other_object_type )
 
     object_identifies = false
-    
     object_class.ancestors.each do |this_ancestor|
-      if identifies_as_hash = @instance_identities[ this_ancestor ]
+      if do_not_identify_as_hash = @instances_do_not_identify_as[ this_ancestor ] and
+         do_not_identify_as_hash.has_key?( other_object_type )
+          object_identifies = nil
+          break
+      elsif identifies_as_hash = @instance_identities[ this_ancestor ]
         object_identifies = identifies_as_hash.has_key?( other_object_type )
       end
+
     end
     
     return object_identifies
@@ -157,15 +187,26 @@ module ::IdentifiesAs
   end
 
   ######################################
-  #  self.object_stop_identifying_as!  #
+  #  self.stop_object_identifying_as!  #
   ######################################
   
-  def self.object_stop_identifying_as!( object, *objects )
+  def self.stop_object_identifying_as!( object, *objects )
 
-    if identifies_as_hash = @identities[ object.__id__ ]
+    object_id = object.__id__
+
+    if identifies_as_hash = @identities[ object_id ]
       objects.each do |this_object|
         identifies_as_hash.delete( this_object )
       end
+    end
+
+    unless do_not_identify_as_hash = @do_not_identify_as[ object_id ]
+      do_not_identify_as_hash = { }
+      @do_not_identify_as[ object_id ] = do_not_identify_as_hash
+    end
+
+    objects.each do |this_object|
+      do_not_identify_as_hash[ this_object ] = true
     end
     
     return identifies_as_hash
@@ -173,10 +214,10 @@ module ::IdentifiesAs
   end
 
   ################################################
-  #  self.object_stop_instances_identifying_as!  #
+  #  self.stop_object_instances_identifying_as!  #
   ################################################
   
-  def self.object_stop_instances_identifying_as!( object_class, *objects )
+  def self.stop_object_instances_identifying_as!( object_class, *objects )
 
     if identifies_as_hash = @instance_identities[ object_class ]
       object_identifies = identifies_as_hash.has_key?( object_class )
@@ -184,7 +225,16 @@ module ::IdentifiesAs
         object_identifies.delete( this_object )
       end
     end
-    
+
+    unless do_not_identify_as_hash = @instances_do_not_identify_as[ object_class ]
+      do_not_identify_as_hash = { }
+      @instances_do_not_identify_as[ object_class ] = do_not_identify_as_hash
+    end
+
+    objects.each do |this_object|
+      do_not_identify_as_hash[ this_object ] = true
+    end
+
     return identifies_as_hash
 
   end
