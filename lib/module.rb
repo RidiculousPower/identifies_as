@@ -1,5 +1,5 @@
 
-module ::IdentifiesAs::ClassInstance
+class ::Module
 
   ############################
   #  instances_identify_as!  #
@@ -57,14 +57,16 @@ module ::IdentifiesAs::ClassInstance
   #  ===  #
   #########
   
+  alias_method :case_compare, :===
+  
   def ===( object )
     
     is_equal = false
     
-    if ::IdentifiesAs.object_identifies_as?( object, self )
+    if ::IdentifiesAs.respond_to?( :object_identifies_as? ) and ::IdentifiesAs.object_identifies_as?( object, self )
       is_equal = true
     else
-      is_equal = super
+      is_equal = case_compare( object )
     end
 
     return is_equal
@@ -75,9 +77,11 @@ module ::IdentifiesAs::ClassInstance
   #  <  #
   #######
 
+  alias_method :less_than, :<
+
   def <( object )
     
-    is_less_than = super
+    is_less_than = less_than( object )
     
     if is_less_than.nil?
       # a class is < another class if it has the other class as one of its ancestors
@@ -94,9 +98,11 @@ module ::IdentifiesAs::ClassInstance
   #  >  #
   #######
 
+  alias_method :greater_than, :>
+
   def >( object )
 
-    is_greater_than = super
+    is_greater_than = greater_than( object )
     
     if is_greater_than.nil?
       # a class is > another class if the other class has it as one of its ancestors
@@ -118,9 +124,11 @@ module ::IdentifiesAs::ClassInstance
   #  <=  #
   ########
 
+  alias_method :less_than_or_equal_to, :<=
+
   def <=( object )
     
-    is_less_than_or_equal_to = super
+    is_less_than_or_equal_to = less_than_or_equal_to( object )
     
     if is_less_than_or_equal_to.nil?
       # a class is < another class if it has the other class as one of its ancestors
@@ -137,9 +145,11 @@ module ::IdentifiesAs::ClassInstance
   #  >=  #
   ########
 
+  alias_method :greater_than_or_equal_to, :>=
+
   def >=( object )
 
-    is_greater_than_or_equal_to = super
+    is_greater_than_or_equal_to = greater_than_or_equal_to( object )
     
     if is_greater_than_or_equal_to.nil?
       # a class is < another class if it has the other class as one of its ancestors
@@ -160,6 +170,8 @@ module ::IdentifiesAs::ClassInstance
   #########
   #  <=>  #
   #########
+
+  alias_method :compare, :<=>
 
   def <=>( object )
     

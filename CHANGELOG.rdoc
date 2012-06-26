@@ -10,3 +10,7 @@ Added support for subclassing and module inclusion.
 Added Module-level support for :<, :>, :<=, :>=, :<==>.
 Updates for support to stop identification when an ancestor identifies (either actually or by way of IdentifiesAs).
 Fix for Module (now Module includes IdentifiesAs::ClassInstance).
+
+== 6/13/2012
+
+Fix for ClassInstance - now defined directly in Module since it seems Module methods are defined in the class not in a module interface, which means we can't insert methods before and call super.

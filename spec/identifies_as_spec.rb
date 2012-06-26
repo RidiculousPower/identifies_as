@@ -18,7 +18,6 @@ describe ::IdentifiesAs do
   it 'lets an object pretend it is another object' do
     
     instance = Object.new
-    instance.extend( IdentifiesAs )
     
     instance.identifies_as!( Array )
     instance.identifies_as?( Array ).should == true
@@ -50,12 +49,15 @@ describe ::IdentifiesAs do
 
     class SomeOtherClass
     end
+    
+    module SomeModule
+    end
 
     class NotAnArray
-      include IdentifiesAs
       identifies_as!( Array )
       instances_identify_as!( Array )
       identifies_as!( SomeOtherClass )
+      instances_identify_as!( SomeModule )
     end
     class AlsoNotAnArray < NotAnArray
     end
@@ -91,11 +93,17 @@ describe ::IdentifiesAs do
     not_an_array_instance.identifies_as?( Array ).should == true
     not_an_array_instance.is_a?( Array ).should == true
     ( Array === not_an_array_instance ).should == true
+    not_an_array_instance.identifies_as?( SomeModule ).should == true
+    not_an_array_instance.is_a?( SomeModule ).should == true
+    ( SomeModule === not_an_array_instance ).should == true
 
     also_not_an_array_instance = AlsoNotAnArray.new
     also_not_an_array_instance.identifies_as?( Array ).should == true
     also_not_an_array_instance.is_a?( Array ).should == true
     ( Array === also_not_an_array_instance ).should == true
+    ( SomeModule === also_not_an_array_instance ).should == true
+    also_not_an_array_instance.identifies_as?( SomeModule ).should == true
+    also_not_an_array_instance.is_a?( SomeModule ).should == true
 
     module IncludersActLikeArray
       include IdentifiesAs

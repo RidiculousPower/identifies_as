@@ -61,7 +61,7 @@ module ::IdentifiesAs::ObjectInstance
   def is_a?( object )
     
     is_type = false
-    
+
     if identifies_as?( object )    
       is_type = true
     else
