@@ -1,6 +1,4 @@
 
-require 'module-cluster'
-
 module ::IdentifiesAs
 end
 
