@@ -13,6 +13,18 @@ module ::IdentifiesAs
   @do_not_identify_as = { }
   @instances_do_not_identify_as = { }
   
+  ###################
+  #  self.included  #
+  ###################
+
+  def self.included( module_instance )
+    
+    super if defined?( super )
+    
+    module_instance.extend( self )
+    
+  end
+  
   ################################
   #  self.object_identifies_as!  #
   ################################
@@ -70,7 +82,7 @@ module ::IdentifiesAs
   ################################
 
   def self.object_identifies_as?( object, other_object_type )
-
+    
     object_identifies = object_instance_identifies_as?( object, other_object_type )
 
     # If we got nil that means we were told to stop looking.
@@ -95,7 +107,7 @@ module ::IdentifiesAs
     object_identifies = false
     
     object_ancestor_chain = nil
-  
+
     if object.actually_is_a?( ::Module )
       object_ancestor_chain = object.ancestors.dup
     else
@@ -138,11 +150,11 @@ module ::IdentifiesAs
           object_identifies = nil
           break
       elsif identifies_as_hash = @instance_identities[ this_ancestor ]
-        object_identifies = identifies_as_hash.has_key?( other_object_type )
+        break if object_identifies = identifies_as_hash.has_key?( other_object_type )
       end
 
     end
-    
+
     return object_identifies
     
   end
@@ -240,8 +252,4 @@ module ::IdentifiesAs
 
   end
       
-end
-
-class ::Object
-  include ::IdentifiesAs
 end

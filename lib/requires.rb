@@ -19,5 +19,6 @@ files.each do |this_file|
 end
 
 class ::Object
+  include ::IdentifiesAs::ActuallyIsA
   include ::IdentifiesAs::ObjectInstance
 end

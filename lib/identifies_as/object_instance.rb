@@ -62,7 +62,8 @@ module ::IdentifiesAs::ObjectInstance
     
     is_type = false
 
-    if identifies_as?( object )    
+    if actually_is_a?( ::IdentifiesAs ) and 
+       identifies_as?( object )    
       is_type = true
     else
       is_type = super

@@ -1,6 +1,6 @@
 
 class ::Module
-
+  
   ############################
   #  instances_identify_as!  #
   ############################
@@ -63,7 +63,9 @@ class ::Module
     
     is_equal = false
     
-    if ::IdentifiesAs.respond_to?( :object_identifies_as? ) and ::IdentifiesAs.object_identifies_as?( object, self )
+    if ::IdentifiesAs.respond_to?( :object_identifies_as? ) and 
+       object.actually_is_a?( ::IdentifiesAs )              and
+       ::IdentifiesAs.object_identifies_as?( object, self )
       is_equal = true
     else
       is_equal = case_compare( object )
@@ -85,7 +87,8 @@ class ::Module
     
     if is_less_than.nil?
       # a class is < another class if it has the other class as one of its ancestors
-      if self != object and ::IdentifiesAs.object_instance_identifies_as?( self, object )
+      if self != object and 
+         ::IdentifiesAs.object_instance_identifies_as?( self, object )
         is_less_than = true
       end
     end
@@ -106,7 +109,8 @@ class ::Module
     
     if is_greater_than.nil?
       # a class is > another class if the other class has it as one of its ancestors
-      if self != object and ::IdentifiesAs.object_instance_identifies_as?( object, self )
+      if self != object and 
+         ::IdentifiesAs.object_instance_identifies_as?( object, self )
         is_greater_than = true
       else
         is_less_than = self < object
@@ -132,7 +136,8 @@ class ::Module
     
     if is_less_than_or_equal_to.nil?
       # a class is < another class if it has the other class as one of its ancestors
-      if self == object or ::IdentifiesAs.object_instance_identifies_as?( self, object )
+      if self == object or 
+         ::IdentifiesAs.object_instance_identifies_as?( self, object )
         is_less_than_or_equal_to = true
       end
     end
@@ -153,7 +158,8 @@ class ::Module
     
     if is_greater_than_or_equal_to.nil?
       # a class is < another class if it has the other class as one of its ancestors
-      if self == object or ::IdentifiesAs.object_instance_identifies_as?( object, self )
+      if self == object or 
+         ::IdentifiesAs.object_instance_identifies_as?( object, self )
         is_greater_than_or_equal_to = true
       else
         is_less_than_or_equal_to = self <= object

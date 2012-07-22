@@ -18,6 +18,7 @@ describe ::IdentifiesAs do
   it 'lets an object pretend it is another object' do
     
     instance = Object.new
+    instance.extend( ::IdentifiesAs )
     
     instance.identifies_as!( Array )
     instance.identifies_as?( Array ).should == true
@@ -54,6 +55,7 @@ describe ::IdentifiesAs do
     end
 
     class NotAnArray
+      include ::IdentifiesAs
       identifies_as!( Array )
       instances_identify_as!( Array )
       identifies_as!( SomeOtherClass )
