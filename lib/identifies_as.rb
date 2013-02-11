@@ -108,11 +108,11 @@ module ::IdentifiesAs
     
     object_ancestor_chain = nil
 
-    if object.actually_is_a?( ::Module )
+    if ::Module.case_compare( object )
       object_ancestor_chain = object.ancestors.dup
     else
       object_ancestor_chain = [ object ]
-      if object.actually_is_a?( ::Symbol ) or object.actually_is_a?( ::Fixnum )
+      if ::Symbol.case_compare( object ) or ::Fixnum.case_compare( object )
         object_ancestor_chain.concat( object.class.ancestors )
       else
         object_ancestor_chain.concat( class << object ; ancestors ; end )

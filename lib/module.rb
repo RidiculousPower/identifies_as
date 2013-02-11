@@ -64,7 +64,7 @@ class ::Module
     is_equal = false
     
     if ::IdentifiesAs.respond_to?( :object_identifies_as? ) and 
-       object.actually_is_a?( ::IdentifiesAs )              and
+       ::IdentifiesAs.case_compare( object )                and
        ::IdentifiesAs.object_identifies_as?( object, self )
       is_equal = true
     else
