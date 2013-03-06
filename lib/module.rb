@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 
 class ::Module
   
@@ -63,9 +64,7 @@ class ::Module
     
     is_equal = false
     
-    if ::IdentifiesAs.respond_to?( :object_identifies_as? ) and 
-       ::IdentifiesAs.case_compare( object )                and
-       ::IdentifiesAs.object_identifies_as?( object, self )
+    if ::IdentifiesAs::FakeInstance.case_compare( object ) and ::IdentifiesAs.object_identifies_as?( object, self )
       is_equal = true
     else
       is_equal = case_compare( object )
@@ -87,8 +86,7 @@ class ::Module
     
     if is_less_than.nil?
       # a class is < another class if it has the other class as one of its ancestors
-      if self != object and 
-         ::IdentifiesAs.object_instance_identifies_as?( self, object )
+      if self != object and ::IdentifiesAs.object_instance_identifies_as?( self, object )
         is_less_than = true
       end
     end

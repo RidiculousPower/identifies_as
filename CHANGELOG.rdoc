@@ -18,3 +18,8 @@ Fix for ClassInstance - now defined directly in Module since it seems Module met
 == 7/04/2012
 
 Removed module-cluster dependency, which was already irrelevant.
+
+== 3/06/2013
+
+Updates for efficiency - was doing unnecessary checks and creating unnecessary arrays.
+Format updates.

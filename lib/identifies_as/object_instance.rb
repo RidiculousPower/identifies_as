@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 
 module ::IdentifiesAs::ObjectInstance
 
@@ -10,13 +11,11 @@ module ::IdentifiesAs::ObjectInstance
   # Cause receiver to identify as specified objects.
   # @param [Array<Object>] objects Other objects self should identify as.
   # @return [Object] Self.
-  def __identifies_as__!( *objects )
+  def identifies_as!( *objects )
 
     return ::IdentifiesAs.object_identifies_as!( self, *objects )
     
   end
-
-  alias_method :identifies_as!, :__identifies_as__!
 
   ####################
   #  identifies_as?  #
@@ -25,13 +24,11 @@ module ::IdentifiesAs::ObjectInstance
   # Query whether receiver identifies as specified object.
   # @param [Object] object Object against which identity is being tested.
   # @return [true,false] Whether receiver identifies as object.
-  def __identifies_as__?( object )
+  def identifies_as?( object )
     
     return ::IdentifiesAs.object_identifies_as?( self, object )    
     
   end
-
-  alias_method :identifies_as?, :__identifies_as__?
 
   ################
   #  identities  #
@@ -39,13 +36,11 @@ module ::IdentifiesAs::ObjectInstance
   
   # Identities that receiver identifies as, beyond those which it actually is.
   # @return [Array<Object>] Identities receiver identifies as.
-  def __identities__
+  def identities
     
     return ::IdentifiesAs.object_identities( self )    
     
   end
-
-  alias_method :identities, :__identities__
 
   ##########################
   #  stop_identifying_as!  #
@@ -54,13 +49,11 @@ module ::IdentifiesAs::ObjectInstance
   # Cause receiver to no longer identify as specified objects.
   # @param [Array<Object>] objects Other objects receiver should no longer identify as.
   # @return [Object] Self.
-  def __stop_identifying_as__!( *objects )
+  def stop_identifying_as!( *objects )
     
     return ::IdentifiesAs.stop_object_identifying_as!( self, *objects )    
     
   end
-
-  alias_method :stop_identifying_as!, :__stop_identifying_as__!
 
   ###########
   #  is_a?  #
@@ -70,8 +63,8 @@ module ::IdentifiesAs::ObjectInstance
     
     is_type = false
 
-    if __actually_is_a__?( ::IdentifiesAs ) and 
-       __identifies_as__?( object )    
+    if actually_is_a?( ::IdentifiesAs::FakeInstance ) and 
+       identifies_as?( object )    
       is_type = true
     else
       is_type = super
@@ -80,7 +73,5 @@ module ::IdentifiesAs::ObjectInstance
     return is_type
     
   end
-
-  alias_method :__is_a__?, :is_a?
 
 end
